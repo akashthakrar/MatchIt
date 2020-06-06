@@ -3,6 +3,9 @@ import Candidate from '../models/candidate.model';
 import {log} from "../services/logger";
 
 export class CandidateController {
+    public giveRootResponse(req: Request, res: Response) {
+        res.send("Hello, This is root");
+    }
     public createCandidate (req: Request, res: Response){
         log.info("here");
         let candidate = new Candidate({
@@ -19,7 +22,7 @@ export class CandidateController {
             })
         }).catch(e => {
             res.status(500).json({
-                message: 'Mailer Error'
+                message: e
             });
         });
     }
