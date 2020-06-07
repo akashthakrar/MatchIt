@@ -46,11 +46,27 @@ export class CandidateController {
             },
             { new: true }
         )
-            .then((candidate1) => {
+            .then((candidate) => {
                 //console.log(candidate1);
                 res.send({
                     status: "SUCCESS",
-                    message: candidate1,
+                    message: candidate,
+                });
+            })
+            .catch((e) => {
+                res.status(500).json({
+                    message: e,
+                });
+            });
+    }
+    public getCandidate(req: Request, res: Response) {
+        let seq = req.params.seq;
+        //console.log(seq);
+        Candidate.findOne({ seq: seq })
+            .then((candidate) => {
+                res.send({
+                    status: "SUCCESS",
+                    message: candidate,
                 });
             })
             .catch((e) => {
