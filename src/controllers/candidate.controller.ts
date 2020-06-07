@@ -1,30 +1,62 @@
-import {Request, Response} from 'express';
-import Candidate from '../models/candidate.model';
-import {log} from "../services/logger";
+import { Request, Response } from "express";
+import Candidate from "../models/candidate.model";
+import { log } from "../services/logger";
 
 export class CandidateController {
     public giveRootResponse(req: Request, res: Response) {
         res.send("Hello, This is root");
     }
-    public createCandidate (req: Request, res: Response){
-        log.info("here");
+    public createCandidate(req: Request, res: Response) {
         let candidate = new Candidate({
-            firstName: "Akash",
-            lastName: "Thakrar",
-            email: "akashthakrar4@gmail.com",
-            phoneNumber: "8866667570"
-
+            firstName: req.body.firstName,
+            middleName: req.body.middleName,
+            lastName: req.body.lastName,
+            birthDate: req.body.birthDate,
+            email: req.body.email,
+            phoneNumber: req.body.phoneNumber,
+            gender: req.body.gender,
         });
-        candidate.save().then(candidate=>{
-            res.send({
-                status: "SUCCESS",
-                message: candidate
+        candidate
+            .save()
+            .then((candidate) => {
+                res.send({
+                    status: "SUCCESS",
+                    message: candidate,
+                });
             })
-        }).catch(e => {
-            res.status(500).json({
-                message: e
+            .catch((e) => {
+                res.status(500).json({
+                    message: e,
+                });
             });
-        });
     }
-
+    public updateCandidate(req: Request, res: Response) {
+        Candidate.updateOne(
+            { seq: req.body.seq },
+            {
+                $set: {
+                    firstName: req.body.firstName,
+                    lastName: req.body.lastName,
+                    middleName: req.body.middleName,
+                    birthDate: req.body.birthDate,
+                    email: req.body.email,
+                    phoneNumber: req.body.phoneNumber,
+                    gender: req.body.gender,
+                },
+            },
+            { new: true }
+        )
+            .then((candidate1) => {
+                //console.log(candidate1);
+                res.send({
+                    status: "SUCCESS",
+                    message: candidate1,
+                });
+            })
+            .catch((e) => {
+                res.status(500).json({
+                    message: e,
+                });
+            });
+    }
 }

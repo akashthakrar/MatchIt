@@ -5,9 +5,12 @@ let Config = require('../config');
 export interface ICandidate extends Document {
     seq: string,
     firstName: string,
+    middleName: string,
     lastName: string,
+    birthDate: Schema.Types.Date,
     email: string,
-    phoneNumber: string
+    phoneNumber: string,
+    gender: string
 }
 
 const CounterSchema = new Schema({
@@ -19,24 +22,32 @@ const counter = model('counter', CounterSchema);
 export const CandidateSchema: Schema = new Schema({
     seq: Schema.Types.String,
     firstName: Schema.Types.String,
+    middleName: Schema.Types.String,
     lastName: Schema.Types.String,
+    birthDate: {
+        type: Schema.Types.Date,
+        required: true
+    },
     email: {
         type: Schema.Types.String,
-        required: true,
         unique: true
     },
 
     phoneNumber: {
         type: Schema.Types.String,
         unique: true
+    },
+    gender: {
+        type: Schema.Types.String,
+        required: true,
+        enum: ['male', 'female'],
     }
 }, {timestamps: true});
 
 CandidateSchema.pre('save',function (next) {
     let doc = <ICandidate>this;
-    counter.findByIdAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }).then((counter: any)=>{
+    counter.findOneAndUpdate({_id: 'entityId'}, {$inc: { seq: 1} }).then((counter: any)=>{
         doc.seq = counter.seq;
-        console.log(doc);
         next();
     }).catch(error=>{
         return next(error);

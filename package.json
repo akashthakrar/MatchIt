@@ -21,5 +21,11 @@
     "pug": "2.0.0-beta11",
     "request-promise": "^4.2.5",
     "typescript": "^3.9.3"
+  },
+  "devDependencies": {
+    "prettier": "^2.0.5"
+  },
+  "prettier": {
+    "tabWidth": 4
   }
 }

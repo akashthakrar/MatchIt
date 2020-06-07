@@ -14,7 +14,8 @@ class CandidateRoutes {
     registerMethods() {
         //Register All methods here.
         this.router.get('/', this.CandidateAuthController.giveRootResponse);
-        this.router.get('/add', this.CandidateAuthController.createCandidate);
+        this.router.post('/add', this.CandidateAuthController.createCandidate);
+        this.router.put('/update', this.CandidateAuthController.updateCandidate);
         // this.router.post('/login', this.CandidateAuthController.login);
         // this.router.post('/forgotPassword', this.CandidateAuthController.forgetPassword);
         // this.router.post('/changeForgotPassword', this.CandidateAuthController.changeForgetPassword);
